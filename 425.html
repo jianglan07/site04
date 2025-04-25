@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>Flying Balloons</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #e0f7fa;
+        }
+
+       .balloon {
+            position: absolute;
+            border-radius: 50%;
+            transition: all 0.1s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="balloon-container"></div>
+    <script>
+        const colors = ['red', 'orange', 'yellow', 'green', 'black', 'blue', 'purple'];
+        const container = document.getElementById('balloon-container');
+        const numBalloons = 10;
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            balloon.style.backgroundColor = color;
+            const startX = Math.random() * window.innerWidth;
+            balloon.style.left = `${startX}px`;
+            balloon.style.bottom = '0px';
+            const startSize = Math.random() * 50 + 30;
+            balloon.style.width = `${startSize}px`;
+            balloon.style.height = `${startSize}px`;
+            container.appendChild(balloon);
+            return balloon;
+        }
+
+        function moveBalloon(balloon) {
+            let y = 0;
+            const interval = setInterval(() => {
+                y += 1;
+                const currentSize = parseFloat(balloon.style.width.replace('px', ''));
+                const newSize = currentSize + 0.1;
+                balloon.style.width = `${newSize}px`;
+                balloon.style.height = `${newSize}px`;
+                balloon.style.bottom = `${y}px`;
+
+                if (y > window.innerHeight * 0.7) {
+                    clearInterval(interval);
+                    container.removeChild(balloon);
+                }
+            }, 10);
+        }
+
+        for (let i = 0; i < numBalloons; i++) {
+            const balloon = createBalloon();
+            setTimeout(() => moveBalloon(balloon), i * 500);
+        }
+    </script>
+</body>
+
+</html>
+    
